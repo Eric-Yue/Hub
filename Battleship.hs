@@ -6,10 +6,10 @@
 -- without the explicit permission from the original author. 
 --
 -- Assignment completed by:
--- Name    :
--- UID     :
--- Tutor   :
--- Lab Time: 
+-- Name    : Pengyue Yang
+-- UID     : u6233542
+-- Tutor   : James Kenneth Richardson
+-- Lab Time: Thur 17:00-19:00
 
 module Battleship where
 
@@ -29,7 +29,9 @@ showBoard cells = "+" ++ replicate 21 '-' ++ "+\n"
         rowsToGrid row = "| " ++ intercalate " " (map cStateToCell row) ++ " |"
         
         cStateToCell :: Cell -> String
-        cStateToCell = undefined
+        cStateToCell x = case x of
+            Hit -> "o"
+            Miss -> "x"
     
 data Cell = Unchecked | Hit | Miss
     deriving (Show, Read)
@@ -75,7 +77,13 @@ validPlacement gs c d s =
         onCoords = getCoords c d (shipLength s)
         
 shipLength :: ShipType -> Integer
-shipLength = undefined
+shipLength x = case x of
+    Carrier -> 5
+    Battleship -> 4
+    Cruiser -> 3
+    Submarine -> 3
+    Destroyer -> 2
+
     
 -- getCoords returns the list of Coordinate which would be
 -- occupied by the ship.
@@ -92,7 +100,9 @@ getNeighbours :: Coordinate -> [Coordinate]
 getNeighbours (x, y) = [(i, j) | i <- [(x - 1) .. (x + 1)], j <- [(y - 1) .. (y + 1)]]
     
 coordInBound :: Coordinate -> Bool
-coordInBound = undefined
+coordInBound ( x , y )
+      | 0 <= x  && x <= 9 && 0 <= y && y <= 9 = True
+      | otherwise = False
 
 -- isShipAtCoord determines if there is a ship already placed
 -- at the coord.
@@ -100,7 +110,12 @@ isShipAtCoord :: Coordinate -> Ships -> Bool
 isShipAtCoord (x, y) grid = grid !! (fromIntegral y) !! (fromIntegral x)
 
 placeShip :: GenShips -> Coordinate -> Direction -> ShipType -> GenShips
-placeShip = undefined
+placeShip m x y z = case m of
+     GenShips {gsShips = e} e /= [Carrier,Battleship,Submarine,Cruiser,Destroyer]
+          getCoords x y (shipLength z) -> GenShips {gsShips = e} = case e of
+            [Carrier,Battleship,Submarine,Cruiser,Destroyer]-> GenShips {finished = h} == True
+            _ -> GenShips q w l o
+     _ -> GenShips {finished = h} == True
 
 transitionState :: State -> Coordinate -> State
 transitionState = undefined
